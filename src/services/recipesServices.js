@@ -1,7 +1,8 @@
 const Joi = require('joi');
 const { createRecipes, getAllRecipes, getRecipesById,
    updateRecipes, 
-   deleteRecipes } = require('../models/recipesModels');
+   deleteRecipes, 
+   addImageRecipes } = require('../models/recipesModels');
  const errorMessages = require('../utills/errosUtills');
 
  const validRecipes = Joi.object({
@@ -59,10 +60,19 @@ const recipesDelete = async (id) => {
   await deleteRecipes(id);
 };
 
+const recipesAddImage = async (id, image) => {
+  await addImageRecipes(id, image);
+
+  const add = await getRecipesById(id);
+
+  return add;
+};
+
 module.exports = {
     recipesCreate,
     recipesAllGet,
     recipeById,
     recipesUpdate,
     recipesDelete,
+    recipesAddImage,
 };

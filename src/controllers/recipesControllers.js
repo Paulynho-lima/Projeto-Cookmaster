@@ -1,6 +1,7 @@
 const { recipesCreate, recipesAllGet, recipeById,
      recipesUpdate, 
-     recipesDelete } = require('../services/recipesServices');
+     recipesDelete, 
+     recipesAddImage } = require('../services/recipesServices');
 
 const recipesControlCreate = async (req, res, next) => {
     try {
@@ -8,8 +9,6 @@ const recipesControlCreate = async (req, res, next) => {
         const id = await recipesCreate(name, ingredients, preparation);
 
         const idu = req.user;
-
-        console.log(idu);
 
     return res.status(201)
       .json({ recipe: { name, ingredients, preparation, userId: idu, _id: id } });
@@ -34,7 +33,6 @@ const recipesControlById = async (req, res, next) => {
         const { id } = req.params;
         const byId = await recipeById(id);
         
-        console.log(byId);
         return res.status(200).json(byId);
     } catch (error) {
         console.log(`POST GETRECIPESBYID: ${error.message}`);
@@ -49,8 +47,6 @@ const recipesControlUpdate = async (req, res, next) => {
          await recipesUpdate(id, name, ingredients, preparation);
 
         const idu = req.user;
-
-        console.log(id);
 
     return res.status(200)
       .json({ _id: id, name, ingredients, preparation, userId: idu });
@@ -73,10 +69,30 @@ const recipesControlDelete = async (req, res, next) => {
     }
 };
 
+const recipesControlImage = async (req, res, next) => {
+  try {
+      const { id } = req.params;
+      const idu = req.user;
+    
+      const images = `localhost:3000/src/uploads/${id}.jpeg`;
+
+        const add = await recipesAddImage(id);
+        const { name, ingredients, preparation } = add;
+        
+       // console.log(add);
+      return res.status(200)
+      .json({ _id: id, name, ingredients, preparation, userId: idu, image: images });
+  } catch (error) {
+      console.log(`POST ERROR_ADDIMAGE: ${error.message}`);
+      next(error);
+  }
+};
+
 module.exports = {
     recipesControlCreate,
     recipesControlAll,
     recipesControlById,
     recipesControlUpdate,
     recipesControlDelete,
+    recipesControlImage,
 };
