@@ -43,6 +43,13 @@ const addImageRecipes = async (id, image) => {
   return add;
 };
 
+const getImageById = async (id) => {
+    const connect = await connection();
+    const { idBy } = await connect.collection('recipes').findOne({ _id: ObjectId(id) });
+    console.log(idBy);
+    return idBy;
+};
+
 module.exports = {
     createRecipes,
     getAllRecipes,
@@ -50,4 +57,5 @@ module.exports = {
     updateRecipes,
     deleteRecipes,
     addImageRecipes,
+    getImageById,
 };

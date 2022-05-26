@@ -8,7 +8,8 @@ const { recipesControlCreate, recipesControlAll,
      recipesControlById, 
      recipesControlUpdate, 
      recipesControlDelete, 
-     recipesControlImage } = require('../controllers/recipesControllers');
+     recipesControlImage, 
+     imageControlById } = require('../controllers/recipesControllers');
 const validAuth = require('../midllewares/errorAuth');
 const upload = require('../utills/multer');
 
@@ -26,6 +27,7 @@ app.get('/recipes/:id', recipesControlById);
 app.put('/recipes/:id', validAuth, recipesControlUpdate);
 app.delete('/recipes/:id', validAuth, recipesControlDelete);
 app.put('/recipes/:id/image', validAuth, upload.single('image'), recipesControlImage);
+app.get('/images/:id', imageControlById);
 app.use(midllewareError);
 
 app.listen(PORT, () => console.log(`conectado na porta ${PORT}`));

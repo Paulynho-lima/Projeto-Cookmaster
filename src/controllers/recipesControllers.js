@@ -1,7 +1,9 @@
+const path = require('path');
 const { recipesCreate, recipesAllGet, recipeById,
      recipesUpdate, 
      recipesDelete, 
-     recipesAddImage } = require('../services/recipesServices');
+     recipesAddImage, 
+     imagesById } = require('../services/recipesServices');
 
 const recipesControlCreate = async (req, res, next) => {
     try {
@@ -88,6 +90,20 @@ const recipesControlImage = async (req, res, next) => {
   }
 };
 
+const imageControlById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // const byId = await imagesById(id);
+      const image = path.join(__dirname, '../', 'uploads', `${id}`);
+
+      console.log(image);
+        return res.status(200).sendFile(image);
+    } catch (error) {
+        console.log(`POST GETRECIPESBYID: ${error.message}`);
+        next(error);
+    }
+};
+
 module.exports = {
     recipesControlCreate,
     recipesControlAll,
@@ -95,4 +111,5 @@ module.exports = {
     recipesControlUpdate,
     recipesControlDelete,
     recipesControlImage,
+    imageControlById,
 };

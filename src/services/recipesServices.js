@@ -1,8 +1,10 @@
 const Joi = require('joi');
+const path = require('path');
 const { createRecipes, getAllRecipes, getRecipesById,
    updateRecipes, 
    deleteRecipes, 
-   addImageRecipes } = require('../models/recipesModels');
+   addImageRecipes, 
+   getImageById } = require('../models/recipesModels');
  const errorMessages = require('../utills/errosUtills');
 
  const validRecipes = Joi.object({
@@ -68,6 +70,13 @@ const recipesAddImage = async (id, image) => {
   return add;
 };
 
+const imagesById = async (id) => {
+  const idres = path.parse(id).name;
+  const byId = await getImageById(idres);
+   
+  return byId;
+};
+
 module.exports = {
     recipesCreate,
     recipesAllGet,
@@ -75,4 +84,5 @@ module.exports = {
     recipesUpdate,
     recipesDelete,
     recipesAddImage,
+    imagesById,
 };
